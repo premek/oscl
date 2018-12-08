@@ -8,10 +8,10 @@ return function(host, port)
   server.udp:setsockname(host, port)
   server.handlers = {}
 
-  server.handler = function(self, decodedMessage)
+  server.handle = function(self, decodedMessage)
 	for k,v in pairs(self.handlers) do
-	  if string.match(decodedMessage.addr, '^'..k) then 
-	    local status, err = pcall(v, unpack(decodedMessage))
+	  if string.match(decodedMessage.addr, '^'..k..'$') then 
+	    local status, err = pcall(v, decodedMessage.addr, unpack(decodedMessage))
 	    if not status then
 		  print("Error in handler function: " .. err)
 		end
@@ -19,14 +19,19 @@ return function(host, port)
 	end
   end
 
+ server.doesHandle = function(self, addr)
+	for k,v in pairs(self.handlers) do
+	  if string.match(addr, '^'..k..'$') then return true end
+	end
+	return false
+  end
+
   server.update = function (self)
     local message = self.udp:receive(1024)
 	if message ~= nil then
-		local decoderSuccess, decodedMessage = pcall(decoder, message)
-		if not decoderSuccess then
-			print("Error in decoding: \n" .. decodedMessage)
-		else
-		    self:handler(decodedMessage)
+		local success, err = pcall(decoder, message, self)
+		if not success then
+			print("Error in decoding: \n" .. err)
 		end
 	end
   end

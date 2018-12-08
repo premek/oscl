@@ -87,9 +87,11 @@ local get_types_from_data = function(data)
 	return result, string.sub(data, last)
 end
 
-local decode_message = function(data)
+local decode_message = function(data, server)
 	local message = {}
 	local addr, tmp_data = get_addr_from_data(data)
+	if not server:doesHandle(addr) then return end
+
 	local types
 	types, tmp_data = get_types_from_data(tmp_data)
 	-- ensure that we at least found something
@@ -100,10 +102,10 @@ local decode_message = function(data)
 	for _,t in ipairs(types) do
 		tmp_data = collect_decoding_from_message(t, tmp_data, message)
 	end
-	return message
+	return server:handle(message)
 end
 
-return function (data)
+return function (data, server)
 	if #data == 0 then
 		return nil
 	end
@@ -111,6 +113,6 @@ return function (data)
 		error("bundle not yet implemented")
         --return decode_bundle(data)
 	else
-		return decode_message(data)
+		return decode_message(data, server)
 	end
 end

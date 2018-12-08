@@ -9,7 +9,7 @@ local r = 0
 
 server.handlers[".*"] = print -- log everything
 server.handlers["/message"] = function() s=200 end
-server.handlers["/message/param.*"] = function(val) r=val end
+server.handlers["/message/param.*"] = function(address, val) r=val end
 
 
 function love.draw(dt)
