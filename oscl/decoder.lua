@@ -1,3 +1,5 @@
+local decode_float = require 'oscl.decoder.float'
+
 local decode_int = function(bin)
 	if bin == nil then
 		error("error: string is empty - probably malformated message")
@@ -47,9 +49,9 @@ local collect_decoding_from_message = function(t, data, message)
 	if t == 'i' then
 		table.insert(message, decode_int(data))
 		return string.sub(data, 5)
---	elseif t == 'f' then
---		table.insert(message, decode_float(data))
---		return string.sub(data, 5)
+	elseif t == 'f' then
+		table.insert(message, decode_float(data))
+		return string.sub(data, 5)
 	elseif t == 'T' then
 		table.insert(message, true)
 		return data
