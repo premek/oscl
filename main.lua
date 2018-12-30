@@ -4,7 +4,7 @@
 local Server = require("oscl.server")
 local server = Server("*", 7773)
 
-local s = 10
+local s = 100
 local r = 0
 
 server.handlers[".*"] = print -- log everything
@@ -13,7 +13,7 @@ server.handlers["/message/param.*"] = function(address, val) r=val end
 
 
 function love.draw(dt)
-    love.graphics.setColor(r/255, 0, 0)
+    love.graphics.setColor(r/255, 1, 1)
     love.graphics.circle("fill", 300, 300, s, 5)
 end
 

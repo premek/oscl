@@ -29,7 +29,7 @@ local next_string = function(astring)
 		if m ~= '\0' and num_zero == 0 then
 			num_nzero = (num_nzero + 1) % 4
 			result = result .. m
-		elseif num_zero ~= 0 and (num_zero + num_nzero) % 4 == 0 then
+		elseif num_zero > 0 and (num_zero + num_nzero) % 4 == 0 then
 			return result, pos
 		elseif m == '\0' then
 			num_zero = num_zero + 1
@@ -37,6 +37,9 @@ local next_string = function(astring)
 		else
 			return nil
 		end
+	end
+	if num_zero > 0 and (num_zero + num_nzero) % 4 == 0 then
+		return result, pos
 	end
 end
 
@@ -47,6 +50,15 @@ local collect_decoding_from_message = function(t, data, message)
 --	elseif t == 'f' then
 --		table.insert(message, decode_float(data))
 --		return string.sub(data, 5)
+	elseif t == 'T' then
+		table.insert(message, true)
+		return data
+	elseif t == 'F' then
+		table.insert(message, false)
+		return data
+	elseif t == 'I' then
+		table.insert(message, math.huge)
+		return data
 	elseif t == 's' then
 		local match, last = next_string(data)
 		table.insert(message, match)
@@ -56,7 +68,7 @@ local collect_decoding_from_message = function(t, data, message)
 --		table.insert(message, string.sub(data, 4, length))
 --		return string.sub(data, 4 + length + 1)
     else
-        error("Not yet supported: " .. t)
+        error("Type not supported: " .. t)
 	end
 end
 
