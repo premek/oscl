@@ -27,12 +27,13 @@ return function(host, port)
   end
 
   server.update = function (self)
-    local message = self.udp:receive(1024)
-	if message ~= nil then
-		local success, err = pcall(decoder, message, self)
-		if not success then
-			print("Error in decoding: \n" .. err)
-		end
+	while true do
+	  local message = self.udp:receive(1024)
+	  if message == nil then break end
+	  local success, err = pcall(decoder, message, self)
+	  if not success then
+		print("Error in decoding: \n" .. err)
+	  end
 	end
   end
 
