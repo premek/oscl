@@ -1,5 +1,5 @@
 local luaunit = require('test.luaunit')
-luaunit.assertFalse(true)
+luaunit.assertFalse(false)
 
 os.exit( luaunit.LuaUnit.run() )
 

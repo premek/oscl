@@ -5,6 +5,7 @@ addons:
   apt:
     packages:
     - lua5.1
+    - luacheck
 
 script:
   - luacheck . --codes --globals love --ignore "_.*"
