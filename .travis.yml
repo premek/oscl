@@ -9,7 +9,7 @@ addons:
     - lua-check
 
 script:
-  - luacheck . --codes --globals love --ignore "_.*"
+  - luacheck oscl --codes --globals love --ignore "_.*"
   - lua test/test.lua
 
 
