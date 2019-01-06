@@ -4,6 +4,7 @@
 -- thanks :)
 
 local floor = require'math'.floor
+local huge = require'math'.huge
 local ldexp = require'math'.ldexp or require'mathx'.ldexp
 
 return function (s)

@@ -10,7 +10,7 @@ return function(host, port)
 
   server.handle = function(self, decodedMessage)
 	for k,v in pairs(self.handlers) do
-	  if string.match(decodedMessage.addr, '^'..k..'$') then 
+	  if string.match(decodedMessage.addr, '^'..k..'$') then
 	    local status, err = pcall(v, decodedMessage.addr, unpack(decodedMessage))
 	    if not status then
 		  print("Error in handler function: " .. err)
@@ -20,8 +20,8 @@ return function(host, port)
   end
 
  server.doesHandle = function(self, addr)
-	for k,v in pairs(self.handlers) do
-	  if string.match(addr, '^'..k..'$') then return true end
+	for pattern, _ in pairs(self.handlers) do
+	  if string.match(addr, '^'..pattern..'$') then return true end
 	end
 	return false
   end
